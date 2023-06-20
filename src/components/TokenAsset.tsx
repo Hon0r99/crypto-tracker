@@ -15,7 +15,7 @@ interface Props {
 
 export default function TokenAsset({symbol, isFavorite}: Props) {
   const API_KEY = '1f622d31-6121-40f1-a253-eb7ce9a2d8a5';
-  
+
   const [logo, setLogo] = useState<string>('');
   const [coinData, setCoinData] = useState<any>();
 
@@ -89,8 +89,8 @@ export default function TokenAsset({symbol, isFavorite}: Props) {
             <Image
               src={logo}
               alt={`${symbol} icon`}
-              width={50} // The width of the image in pixels
-              height={50} // The height of the image in pixels
+              width={50}
+              height={50}
               quality={100}
             />
           </Box>
