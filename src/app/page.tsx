@@ -54,11 +54,6 @@ export default function Home() {
     }
   }
 
-  useEffect(() => {
-    const favorites = localStorage.getItem('favoriteCoins');
-    favorites ? setFavoriteCoins(JSON.parse(favorites)) : setFavoriteCoins([]);
-  }, [])
-
   return (
     <main className="flex min-h-screen flex-col items-center p-3">
       <FormGroup>
