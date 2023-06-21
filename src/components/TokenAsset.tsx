@@ -1,4 +1,3 @@
-'use client'
 
 import Image from 'next/image'
 import { useEffect, useState } from 'react';
@@ -19,22 +18,9 @@ export default function TokenAsset({symbol, isFavorite}: Props) {
 
   async function fetchLogo(): Promise<void> {
     try {
-      const requestHeaders: HeadersInit = new Headers();
-      requestHeaders.set('Content-Type', 'application/json');
-      requestHeaders.set('X-CMC_PRO_API_KEY', process.env.API_KEY!);
-      requestHeaders.set('Content-Type', 'application/json');
-
-      const response = await fetch(`https://pro-api.coinmarketcap.com/v2/cryptocurrency/info?symbol=${symbol}&aux=logo`, {
-        method: 'GET',
-        headers: {
-          'X-CMC_PRO_API_KEY': process.env.API_KEY!,
-          Accept: 'application/json',
-          'Access-Control-Allow-Origin': "*"
-        },
-        
-      },);
+      const response = await fetch(`/api/logo/${symbol}`);
       const responseJson = await response.json();
-      setLogo(responseJson.data[symbol][0].logo)
+      setLogo(responseJson)
     } catch (error) {
       console.log(error);
     }
@@ -42,17 +28,9 @@ export default function TokenAsset({symbol, isFavorite}: Props) {
   
   async function fetchCoinData(): Promise<void> {
     try {
-      const response = await fetch(`https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest?symbol=${symbol}`, {
-        method: 'GET',
-        headers: {
-          'X-CMC_PRO_API_KEY': process.env.API_KEY!,
-          Accept: 'application/json',
-          'Access-Control-Allow-Origin': "*"
-        },
-        
-      },);
+      const response = await fetch(`/api/coin-data/${symbol}`);
       const responseJson = await response.json();
-      setCoinData(responseJson.data[symbol][0])
+      setCoinData(responseJson)
     } catch (error) {
       console.log(error);
     }
@@ -62,7 +40,7 @@ export default function TokenAsset({symbol, isFavorite}: Props) {
     fetchLogo();
     fetchCoinData()
   }
-, []);
+  , []);
 
   return (
      <Box

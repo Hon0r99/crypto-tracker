@@ -1,10 +1,11 @@
 'use client'
 
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { Button, FormControlLabel, FormGroup, Grid, Switch, TextField, Typography } from "@mui/material";
 
 import TokenAsset from "@/components/TokenAsset";
-import { AbstractProvider, formatEther } from "ethers";
+import { AbstractProvider, formatEther, isAddress } from "ethers";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 // "BTC", "ETH", "USDT", "BNB", "USDC", "XRP", "ADA", "DOGE", "TRX", "SOL", "MATIC", "LTC", "DOT", "TON", "DAI", "BUSD", "WBTC", "SHIB"
 
@@ -13,44 +14,49 @@ const provider: AbstractProvider = ethers.getDefaultProvider()
 
 export default function Home() {
   const allCoins = ["BTC", "ETH"];
-  const [favoriteCoins, setFavoriteCoins] = useState<string[]>([])
+
+  const [favoriteCoins, setFavoriteCoins] = useLocalStorage("favoriteCoins", "");
   const [isFavorite, setIsFavorite] = useState<boolean>(false);
   const [address, setAdress] = useState<string>('');
   const [balance, setBalance] = useState<string>('');
-  const [balanceError, setBalanceError] = useState<boolean>(false);
-  
+  const [balanceError, setBalanceError] = useState<string>('');
+
   const getBalance = (address: string) => {
     provider.getBalance(address)
-      .then((balance: any) => {
-        setBalance(formatEther(balance))
-        setBalanceError(false)
+      .then((balance: bigint) => {
+        setBalance(formatEther(balance));
+        setBalanceError('');
       })
-      .catch(() =>setBalanceError(true))
+      .catch(() => setBalanceError('Something goes wrong 😢'))
   }
 
-  const toggleFavorite = () =>{
+  const handleSubmit = (e:FormEvent<HTMLFormElement>): void => {
+    e.preventDefault();
+    
+    if(!isAddress(address)) {
+      setBalanceError('Invalid ETH address');
+    }else if (address === '') {
+      setBalanceError('Address is requaried');
+    }else {
+      getBalance(address);
+    }
+  }
+
+  const toggleFavorite = (): void =>{
     setIsFavorite((prev: boolean) => !prev);
   }
 
-  const favoriteToggle = (coin: string) => {
+  const handleTokenClick = (coin: string): void => {
     if (favoriteCoins.includes(coin)) {
-      setFavoriteCoins(prev => {
-        const coins = prev.filter((item: string) => item != coin);
-        localStorage.setItem('favoriteCoins', JSON.stringify(coins));
-        return coins;
-      })
+      setFavoriteCoins((prev: string[]) => prev.filter((item: string) => item != coin));
     }else {
-      setFavoriteCoins((prev =>{
-        const coins = [...prev, coin]
-        localStorage.setItem('favoriteCoins', JSON.stringify(coins));
-        return coins;
-      }))
+      setFavoriteCoins(((prev: string[]) => [...prev, coin]));
     }
   }
 
   useEffect(() => {
-    const favorites = localStorage.getItem('favoriteCoins')
-    favorites ? setFavoriteCoins(JSON.parse(favorites)) : setFavoriteCoins([])
+    const favorites = localStorage.getItem('favoriteCoins');
+    favorites ? setFavoriteCoins(JSON.parse(favorites)) : setFavoriteCoins([]);
   }, [])
 
   return (
@@ -65,12 +71,12 @@ export default function Home() {
         {
           isFavorite 
           ? favoriteCoins.map((coin: string, index: number) =>  (
-            <Grid key={index} item xs={12} md={6} xl={4}>
+            <Grid key={index} item xs={12} md={12} lg={6} xl={4}  onClick={() => handleTokenClick(coin)}>
               <TokenAsset symbol={coin} isFavorite={favoriteCoins.includes(coin)}></TokenAsset>
             </Grid>
           ))
           : allCoins.map((coin: string, index: number) =>  (
-            <Grid key={index} item xs={12} md={12} lg={6} xl={4} onClick={() => favoriteToggle(coin)}>
+            <Grid key={index} item xs={12} md={12} lg={6} xl={4} onClick={() => handleTokenClick(coin)}>
               <TokenAsset symbol={coin} isFavorite={favoriteCoins.includes(coin)}></TokenAsset>
             </Grid>
           ))
@@ -81,10 +87,7 @@ export default function Home() {
       </Typography>
       <form
         className="flex flex-row items-center"
-        onSubmit={(event) => {
-          event.preventDefault();
-          getBalance(address)
-        }}
+        onSubmit={(event) => {handleSubmit(event)}}
       >
         <TextField
           placeholder="Wallet address"
@@ -96,10 +99,10 @@ export default function Home() {
         <Button variant="outlined" type="submit" size="large">Submit</Button>
       </form>
       {
-        balance && <Typography fontSize={28} fontWeight={500}>Balance: {balance} ETH</Typography>
+        balance && <Typography fontSize={26} fontWeight={500}>Balance: {balance} ETH</Typography>
       }
       {
-        balanceError && <Typography fontSize={28} fontWeight={500} className="text-[red]">Something goes wrong 😢</Typography>
+        balanceError && <Typography fontSize={18} fontWeight={500} className="text-[red]">{balanceError}</Typography>
       }
     </main>
   )
