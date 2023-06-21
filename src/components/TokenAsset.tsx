@@ -14,18 +14,22 @@ interface Props {
 }
 
 export default function TokenAsset({symbol, isFavorite}: Props) {
-  const API_KEY = '1f622d31-6121-40f1-a253-eb7ce9a2d8a5';
-
   const [logo, setLogo] = useState<string>('');
   const [coinData, setCoinData] = useState<any>();
 
   async function fetchLogo(): Promise<void> {
     try {
+      const requestHeaders: HeadersInit = new Headers();
+      requestHeaders.set('Content-Type', 'application/json');
+      requestHeaders.set('X-CMC_PRO_API_KEY', process.env.API_KEY!);
+      requestHeaders.set('Content-Type', 'application/json');
+
       const response = await fetch(`https://pro-api.coinmarketcap.com/v2/cryptocurrency/info?symbol=${symbol}&aux=logo`, {
         method: 'GET',
         headers: {
-          'X-CMC_PRO_API_KEY': API_KEY,
+          'X-CMC_PRO_API_KEY': process.env.API_KEY!,
           Accept: 'application/json',
+          'Access-Control-Allow-Origin': "*"
         },
         
       },);
@@ -35,14 +39,15 @@ export default function TokenAsset({symbol, isFavorite}: Props) {
       console.log(error);
     }
   }
-
+  
   async function fetchCoinData(): Promise<void> {
     try {
       const response = await fetch(`https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest?symbol=${symbol}`, {
         method: 'GET',
         headers: {
-          'X-CMC_PRO_API_KEY': API_KEY,
+          'X-CMC_PRO_API_KEY': process.env.API_KEY!,
           Accept: 'application/json',
+          'Access-Control-Allow-Origin': "*"
         },
         
       },);

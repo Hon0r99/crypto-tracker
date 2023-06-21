@@ -12,7 +12,7 @@ const ethers = require('ethers')
 const provider: AbstractProvider = ethers.getDefaultProvider()
 
 export default function Home() {
-  const allCoins = ["BTC", "ETH", "USDT", "BNB", "USDC", "XRP", "ADA", "DOGE"];
+  const allCoins = ["BTC", "ETH"];
   const [favoriteCoins, setFavoriteCoins] = useState<string[]>([])
   const [isFavorite, setIsFavorite] = useState<boolean>(false);
   const [address, setAdress] = useState<string>('');
