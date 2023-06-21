@@ -5,7 +5,7 @@ import { Button, FormControlLabel, FormGroup, Grid, Switch, TextField, Typograph
 
 import TokenAsset from "@/components/TokenAsset";
 import { AbstractProvider, formatEther, isAddress } from "ethers";
-import useLocalStorage from "@/hooks/useLocalStorage";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 // "BTC", "ETH", "USDT", "BNB", "USDC", "XRP", "ADA", "DOGE", "TRX", "SOL", "MATIC", "LTC", "DOT", "TON", "DAI", "BUSD", "WBTC", "SHIB"
 
@@ -15,7 +15,7 @@ const provider: AbstractProvider = ethers.getDefaultProvider()
 export default function Home() {
   const allCoins = ["BTC", "ETH"];
 
-  const [favoriteCoins, setFavoriteCoins] = useLocalStorage("favoriteCoins", "");
+  const [favoriteCoins, setFavoriteCoins] = useLocalStorage<string[]>("favoriteCoins", []);
   const [isFavorite, setIsFavorite] = useState<boolean>(false);
   const [address, setAdress] = useState<string>('');
   const [balance, setBalance] = useState<string>('');
