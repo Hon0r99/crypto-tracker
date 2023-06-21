@@ -5,7 +5,7 @@ import { Button, FormControlLabel, FormGroup, Grid, Switch, TextField, Typograph
 
 import TokenAsset from "@/components/TokenAsset";
 import { AbstractProvider, formatEther, isAddress } from "ethers";
-import { useLocalStorage } from "@/hooks/useLocalStorage";
+import useLocalStorage from "@/hooks/useLocalStorage";
 
 // "BTC", "ETH", "USDT", "BNB", "USDC", "XRP", "ADA", "DOGE", "TRX", "SOL", "MATIC", "LTC", "DOT", "TON", "DAI", "BUSD", "WBTC", "SHIB"
 
@@ -65,13 +65,13 @@ export default function Home() {
       <Grid container spacing={2}>
         {
           isFavorite 
-          ? favoriteCoins.map((coin: string, index: number) =>  (
-            <Grid key={index} item xs={12} md={12} lg={6} xl={4}  onClick={() => handleTokenClick(coin)}>
+          ? favoriteCoins.map((coin: string) =>  (
+            <Grid key={coin} item xs={12} md={12} lg={6} xl={4}  onClick={() => handleTokenClick(coin)}>
               <TokenAsset symbol={coin} isFavorite={favoriteCoins.includes(coin)}></TokenAsset>
             </Grid>
           ))
-          : allCoins.map((coin: string, index: number) =>  (
-            <Grid key={index} item xs={12} md={12} lg={6} xl={4} onClick={() => handleTokenClick(coin)}>
+          : allCoins.map((coin: string) =>  (
+            <Grid key={coin} item xs={12} md={12} lg={6} xl={4} onClick={() => handleTokenClick(coin)}>
               <TokenAsset symbol={coin} isFavorite={favoriteCoins.includes(coin)}></TokenAsset>
             </Grid>
           ))
