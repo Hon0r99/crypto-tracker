@@ -1,11 +1,12 @@
 
-import Image from 'next/image'
 import { useEffect, useState } from 'react';
+import Image from 'next/image'
 import { Box, Typography, } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
 
 import { numberWithCommas, roundDecimal } from '@/utils/general';
+import { CoinDataI } from '@/interfaces/coin-data.interface';
 
 interface Props {
   symbol: string,
@@ -14,13 +15,13 @@ interface Props {
 
 export default function TokenAsset({symbol, isFavorite}: Props) {
   const [logo, setLogo] = useState<string>('');
-  const [coinData, setCoinData] = useState<any>();
+  const [coinData, setCoinData] = useState<CoinDataI>();
 
   async function fetchLogo(): Promise<void> {
     try {
       const response = await fetch(`/api/logo/${symbol}`);
       const responseJson = await response.json();
-      setLogo(responseJson)
+      setLogo(responseJson);
     } catch (error) {
       console.log(error);
     }
@@ -30,7 +31,7 @@ export default function TokenAsset({symbol, isFavorite}: Props) {
     try {
       const response = await fetch(`/api/coin-data/${symbol}`);
       const responseJson = await response.json();
-      setCoinData(responseJson)
+      setCoinData(responseJson);
     } catch (error) {
       console.log(error);
     }
@@ -38,7 +39,7 @@ export default function TokenAsset({symbol, isFavorite}: Props) {
 
   useEffect(() => {
     fetchLogo();
-    fetchCoinData()
+    fetchCoinData();
   }
   , []);
 
