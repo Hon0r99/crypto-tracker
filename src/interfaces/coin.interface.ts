@@ -1,4 +1,4 @@
-export interface CoinDataI {
+export interface CoinI {
   id: number;
   name: string;
   symbol: string;
