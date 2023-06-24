@@ -1,13 +1,15 @@
-import { CoinI } from "@/interfaces/coin.interface";
+import axios from "axios";
 import { useEffect, useState } from "react"
 
-export const useCoin = (symbol: string) => {
-  const [coin, setCoin] = useState<CoinI>();
+import { CoinI } from "@/interfaces/coin.interface";
+
+export const useGetCoin = (symbol: string): {coin: CoinI} => {
+  const [coin, setCoin] = useState<any>();
   
   useEffect(() => {
     const loadCoin = async () => {  
-      const response = await fetch(`/api/coin-data/${symbol}`);
-      const data = await response.json();
+      const response = await axios.get(`/api/coin-data/${symbol}`);
+      const data = response.data;
       setCoin(data);
     }
 

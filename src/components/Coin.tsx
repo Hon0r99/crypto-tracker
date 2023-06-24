@@ -5,8 +5,8 @@ import StarIcon from '@mui/icons-material/Star';
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
 
 import { numberWithCommas, roundDecimal } from '@/utils/general';
-import { useCoin } from '@/hooks/useCoin';
-import { useCoinLogo } from '@/hooks/useCoinLogo';
+import { useGetCoin } from '@/hooks/useCoin';
+import { useGetCoinLogo } from '@/hooks/useCoinLogo';
 
 interface Props {
   symbol: string,
@@ -14,9 +14,9 @@ interface Props {
   handleTokenClick: Function
 }
 
-export default function Coin({symbol, isFavorite, handleTokenClick}: Props) {
-  const { logo } = useCoinLogo(symbol);
-  const { coin } = useCoin(symbol);
+const Coin: React.FC<Props> = ({symbol, isFavorite, handleTokenClick}) => {
+  const { logo } = useGetCoinLogo(symbol);
+  const { coin } = useGetCoin(symbol);
 
   return (
     <Grid item xs={12} md={12} lg={6} xl={4}  onClick={() => handleTokenClick(symbol)}>
@@ -97,3 +97,5 @@ export default function Coin({symbol, isFavorite, handleTokenClick}: Props) {
     </Grid>
   )
 }
+
+export default Coin;

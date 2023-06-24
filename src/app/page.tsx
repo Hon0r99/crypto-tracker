@@ -1,10 +1,12 @@
 'use client'
 
-import BalanceForm from "@/components/BalanceForm";
-import CoinList from "@/components/CoinList";
+import { NextPage } from "next";
 import { Typography } from "@mui/material";
 
-export default function Home() {
+import CoinList from "@/components/CoinList";
+import BalanceForm from "@/components/BalanceForm";
+
+const Home: NextPage = () => {
   return (
     <main className="flex min-h-screen flex-col items-center p-3">
       <Typography fontWeight={500} fontSize={{xs: 24, sm: 32}} padding={'20px'} textAlign={'center'}>
@@ -15,3 +17,5 @@ export default function Home() {
     </main>
   )
 }
+
+export default Home;

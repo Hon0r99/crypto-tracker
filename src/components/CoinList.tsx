@@ -5,9 +5,9 @@ import { Box, FormControlLabel, FormGroup, Grid, Switch, Typography } from "@mui
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import Coin from "@/components/Coin";
 
-export default function CoinList() {
-  const allCoins = ["BTC", "ETH", "USDT", "BNB", "USDC", "XRP"];
+const allCoins = ["BTC", "ETH", "USDT", "BNB", "USDC", "XRP"];
 
+const CoinList: React.FC = () => {
   const [favoriteCoins, setFavoriteCoins] = useLocalStorage<string[]>("favoriteCoins", []);
   const [isFavorite, setIsFavorite] = useState<boolean>(false);
 
@@ -46,3 +46,4 @@ export default function CoinList() {
   )
 }
 
+export default CoinList;

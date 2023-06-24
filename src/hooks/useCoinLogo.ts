@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 
-export const useCoinLogo = (symbol: string) => {
+export const useGetCoinLogo = (symbol: string): {logo: string} => {
   const [logo, setLogo] = useState<string>('');
   
   useEffect(() => {

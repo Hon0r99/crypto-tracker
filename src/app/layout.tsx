@@ -8,14 +8,16 @@ export const metadata = {
   description: 'Stay on top of the cryptocurrency market with our intuitive tracker. Get real-time prices, track your favorite coins, and make informed investment decisions effortlessly.',
 }
 
-export default function RootLayout({
-  children,
-}: {
+interface Props {
   children: React.ReactNode
-}) {
+}
+
+const RootLayout: React.FC<Props> = ({ children }) => {
   return (
     <html lang="en">
       <body className={inter.className}>{children}</body>
     </html>
   )
 }
+
+export default RootLayout;

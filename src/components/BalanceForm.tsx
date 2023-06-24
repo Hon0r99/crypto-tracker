@@ -1,8 +1,8 @@
-import { Box, Button, TextField, Typography, } from '@mui/material';
-import { AbstractProvider, formatEther, isAddress } from 'ethers';
 import { FormEvent, useState } from 'react';
+import { AbstractProvider, formatEther, isAddress } from 'ethers';
+import { Button, TextField, Typography, } from '@mui/material';
 
-export default function BalanceForm() {
+const BalanceForm: React.FC = () => {
   const ethers = require('ethers');
   const provider: AbstractProvider = ethers.getDefaultProvider();
 
@@ -58,3 +58,5 @@ export default function BalanceForm() {
     </>
   )
 }
+
+export default BalanceForm;
